@@ -2,28 +2,30 @@
 
 ## Requirements
 
-* Python 3.5+
-* Virtualenv
+* Python 3
 
-## Installation
+### [macOS](https://www.tensorflow.org/install/install_mac)
 
-### Python
-
-#### macOS
+#### Python
 
 Steps require [Homebrew](https://brew.sh).
 
 ```bash
-brew install python3
+brew install python && brew upgrade python
+python3 -m pip install -U pip setuptools wheel virtualenv
 ```
 
-#### Ubuntu
+### [Ubuntu](https://www.tensorflow.org/install/install_linux)
+
+#### Python
 
 ```bash
-apt update && apt install -y python3 python3-pip
+sudo apt update && sudo apt install -y python3 python3-pip python3-dev
 ```
 
-#### Windows
+### [Windows](https://www.tensorflow.org/install/install_windows)
+
+#### Python
 
 Steps require [Chocolatey](https://chocolatey.org/).
 
@@ -31,10 +33,20 @@ Steps require [Chocolatey](https://chocolatey.org/).
 choco install python3
 ```
 
-### virtualenv
+## Usage
+
+### Install TensorFlow with virtualenv
 
 ```bash
-python3 -m pip install virtualenv
+virtualenv --system-site-packages -p python3 .venv
+source ./.venv/bin/activate
+pip3 install -U -r ./requirements.txt
+```
+
+### Start Tensorboard
+
+```bash
+tensorboard --logdir=./log
 ```
 
 # Resources
@@ -44,3 +56,5 @@ python3 -m pip install virtualenv
 )
 3. [Hotdog-Classification images](https://github.com/hayzamjs/Hotdog-Classification/tree/master/images
 )
+4. [Installing TensorFlow
+](https://www.tensorflow.org/install/)
