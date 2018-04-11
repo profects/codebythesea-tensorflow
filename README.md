@@ -35,6 +35,12 @@ choco install python3
 
 ## Usage
 
+### Clone submodules
+
+```bash
+git submodule init && git submodule update --recursive --remote
+```
+
 ### Install TensorFlow with virtualenv
 
 ```bash
@@ -49,7 +55,11 @@ pip3 install -U -r ./requirements.txt
 tensorboard --logdir=./log
 ```
 
-# Resources
+## Model
+
+[Download](https://drive.google.com/drive/folders/1sNl2_bu-iNKbUyB0lBi55-SygrPwJK8p?usp=sharing) working model.
+
+## Resources
 
 1. [Tensorflow Tutorial 2: image classifier using convolutional neural network](http://cv-tricks.com/tensorflow-tutorial/training-convolutional-neural-network-for-image-classification/)
 2. [Jian Yang: hotdog identifying app](https://www.youtube.com/watch?v=vIci3C4JkL0
