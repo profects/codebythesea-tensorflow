@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import tensorflow as tf
 
 import dataset
@@ -54,7 +56,12 @@ fc_layer_size = 128
 #
 
 def create_weights(shape):
-    return tf.Variable(tf.truncated_normal(shape, stddev=0.05))
+    new_weights = tf.Variable(tf.truncated_normal(shape, stddev=0.05))
+
+    # with tf.name_scope('summary'):
+    #     tf.summary.histogram(new_weights)
+
+    return new_weights
 
 
 def create_biases(size):
@@ -155,6 +162,17 @@ optimizer = tf.train.AdamOptimizer(learning_rate=1e-4).minimize(cost)
 correct_prediction = tf.equal(y_pred_cls, y_true_cls)
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
+with tf.name_scope('summary'):
+    tf.summary.histogram('loss function', accuracy)
+
+
+# Merge all the summaries and write them out to /tmp/mnist_logs (by default)
+merged = tf.summary.merge_all()
+current_time = datetime.now().strftime("%Y%m%d-%H%M")
+train_writer = tf.summary.FileWriter('./logs/{}/train'.format(current_time),
+                                      session.graph)
+test_writer = tf.summary.FileWriter('./logs/{}/test'.format(current_time))
+
 session.run(tf.global_variables_initializer())
 
 
@@ -189,16 +207,23 @@ def train(num_iteration):
                          y_true: y_valid_batch}
 
         session.run(optimizer, feed_dict=feed_dict_tr)
+        accuracy_summary, _ = session.run([merged, accuracy], feed_dict=feed_dict_tr)
+        train_writer.add_summary(accuracy_summary, i)
 
         if i % int(data.train.num_examples / batch_size) == 0:
-            val_loss = session.run(cost, feed_dict=feed_dict_val)
+            val_loss_summary, val_loss = session.run([merged, cost], feed_dict=feed_dict_val)
             epoch = int(i / int(data.train.num_examples / batch_size))
 
             show_progress(epoch, feed_dict_tr, feed_dict_val, val_loss)
+
+            accuracy_summary, _ = session.run([merged, accuracy], feed_dict=feed_dict_val)
+            test_writer.add_summary(val_loss_summary, i)
+            test_writer.add_summary(accuracy_summary, i)
+
             saver.save(session, './model/hotdog-classifier')
 
     total_iterations += num_iteration
 
 
 if __name__ == '__main__':
-    train(num_iteration=500)
+    train(num_iteration=100)
