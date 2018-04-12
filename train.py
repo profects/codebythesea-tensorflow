@@ -15,7 +15,7 @@ classes = ['hotdog', 'not-hotdog']
 num_classes = len(classes)
 
 # 20% of the data will automatically be used for validation
-validation_size = 0.2
+validation_size = 0.3
 img_size = 128
 num_channels = 3
 train_path = 'images'
@@ -158,7 +158,7 @@ y_pred_cls = tf.argmax(y_pred, dimension=1)
 cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=layer_fc2,
                                                         labels=y_true)
 cost = tf.reduce_mean(cross_entropy)
-optimizer = tf.train.AdamOptimizer(learning_rate=1e-4).minimize(cost)
+optimizer = tf.train.AdamOptimizer(learning_rate=5e-6).minimize(cost)
 correct_prediction = tf.equal(y_pred_cls, y_true_cls)
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
@@ -226,4 +226,4 @@ def train(num_iteration):
 
 
 if __name__ == '__main__':
-    train(num_iteration=100)
+    train(num_iteration=3000)
