@@ -52,7 +52,7 @@ pip3 install -U -r ./requirements.txt
 ### Start Tensorboard
 
 ```bash
-tensorboard --logdir=./log
+tensorboard --logdir=./logs
 ```
 
 ## Model
